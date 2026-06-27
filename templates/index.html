@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jira Test Plan Generator</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f0f2f5;
+      color: #222;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      background: #0052cc;
+      color: #fff;
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.2);
+    }
+    header .logo { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px; }
+    header .sub  { font-size: 0.85rem; opacity: .8; }
+
+    /* ── Search bar ── */
+    .search-bar {
+      background: #fff;
+      border-bottom: 1px solid #dde;
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .search-bar label {
+      font-weight: 600;
+      font-size: 0.95rem;
+      white-space: nowrap;
+    }
+    .search-bar input[type="text"] {
+      flex: 1;
+      min-width: 180px;
+      max-width: 320px;
+      padding: 9px 14px;
+      border: 2px solid #c1c7d0;
+      border-radius: 6px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .search-bar input[type="text"]:focus { border-color: #0052cc; }
+    .search-bar button {
+      padding: 10px 24px;
+      background: #0052cc;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s;
+      white-space: nowrap;
+    }
+    .search-bar button:hover { background: #0065ff; }
+    .spinner { display: none; }
+    .search-bar button.loading .spinner { display: inline-block; }
+    .search-bar button.loading .btn-text { display: none; }
+
+    /* ── Main content ── */
+    main { max-width: 940px; margin: 32px auto; padding: 0 24px 60px; }
+
+    /* ── Error ── */
+    .error-box {
+      background: #ffebe6;
+      border: 1px solid #ff5630;
+      color: #bf2600;
+      padding: 14px 18px;
+      border-radius: 8px;
+      margin-bottom: 24px;
+      font-weight: 500;
+    }
+
+    /* ── Empty state ── */
+    .empty-state {
+      text-align: center;
+      margin-top: 80px;
+      color: #6b778c;
+    }
+    .empty-state .icon { font-size: 3.5rem; margin-bottom: 16px; }
+    .empty-state h2 { font-size: 1.3rem; margin-bottom: 8px; color: #344563; }
+    .empty-state p  { font-size: 0.95rem; }
+
+    /* ── Test plan card ── */
+    .plan-card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.08);
+      overflow: hidden;
+    }
+    .plan-card-header {
+      background: #0052cc;
+      color: #fff;
+      padding: 20px 28px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .issue-badge {
+      background: rgba(255,255,255,.2);
+      border: 1px solid rgba(255,255,255,.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+    .plan-card-header h1 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+    .plan-body { padding: 28px 32px; }
+
+    /* ── Markdown output ── */
+    .plan-body h1, .plan-body h2 { color: #0052cc; border-bottom: 2px solid #e8ecf0; padding-bottom: 6px; margin: 1.6em 0 0.6em; }
+    .plan-body h3 { color: #0065ff; margin: 1.4em 0 0.5em; }
+    .plan-body h4 { color: #344563; margin: 1.2em 0 0.4em; }
+    .plan-body p  { margin-bottom: 0.8em; line-height: 1.7; }
+    .plan-body ul, .plan-body ol { padding-left: 1.6em; margin-bottom: 0.8em; }
+    .plan-body li { margin-bottom: 4px; line-height: 1.6; }
+    .plan-body strong { color: #172b4d; }
+    .plan-body table { border-collapse: collapse; width: 100%; margin: 1em 0; font-size: 0.93rem; }
+    .plan-body th { background: #0052cc; color: #fff; padding: 10px 14px; text-align: left; }
+    .plan-body td { padding: 9px 14px; border: 1px solid #dfe1e6; }
+    .plan-body tr:nth-child(even) td { background: #f4f7ff; }
+    .plan-body code { background: #f4f5f7; padding: 2px 6px; border-radius: 4px; font-size: 0.88em; }
+    .plan-body blockquote { border-left: 4px solid #0052cc; margin: 1em 0; padding: 8px 16px; background: #f0f4ff; color: #344563; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo">Test Plan Generator</div>
+    <div class="sub">Powered by Jira + Groq AI</div>
+  </div>
+</header>
+
+<div class="search-bar">
+  <form method="POST" action="/" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;width:100%"
+        onsubmit="this.querySelector('button').classList.add('loading')">
+    <label for="issue_key">Jira Issue ID</label>
+    <input
+      type="text"
+      id="issue_key"
+      name="issue_key"
+      placeholder="e.g. KAN-1, KAN-2 …"
+      value="{{ issue_key }}"
+      autocomplete="off"
+      autofocus
+    >
+    <button type="submit">
+      <span class="btn-text">Generate Test Plan</span>
+      <span class="spinner">Generating…</span>
+    </button>
+  </form>
+</div>
+
+<main>
+
+  {% if error %}
+    <div class="error-box">{{ error }}</div>
+  {% endif %}
+
+  {% if test_plan_html %}
+    <div class="plan-card">
+      <div class="plan-card-header">
+        <span class="issue-badge">{{ issue_key }}</span>
+        <h1>{{ summary }}</h1>
+      </div>
+      <div class="plan-body">
+        {{ test_plan_html | safe }}
+      </div>
+    </div>
+
+  {% elif not error %}
+    <div class="empty-state">
+      <div class="icon">📋</div>
+      <h2>Enter a Jira Issue ID to get started</h2>
+      <p>Type any issue ID (e.g. <strong>KAN-1</strong>, <strong>KAN-2</strong>) and click <strong>Generate Test Plan</strong>.</p>
+    </div>
+  {% endif %}
+
+</main>
+
+</body>
+</html>
