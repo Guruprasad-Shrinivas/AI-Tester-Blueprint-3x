@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test Plan: KAN-1 — User Login Functionality</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    max-width: 860px; margin: 40px auto; padding: 0 24px;
+    color: #222; line-height: 1.7;
+  }
+  h1 { color: #0052cc; border-bottom: 3px solid #0052cc; padding-bottom: 8px; }
+  h3 { color: #0065ff; margin-top: 2em; }
+  h4 { color: #333; }
+  table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+  th { background: #0052cc; color: #fff; padding: 10px 14px; text-align: left; }
+  td { padding: 9px 14px; border: 1px solid #ddd; }
+  tr:nth-child(even) td { background: #f4f7ff; }
+  code { background: #f0f0f0; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+  ul, ol { padding-left: 1.5em; }
+  li { margin-bottom: 4px; }
+  .badge {
+    display: inline-block; background: #0052cc; color: #fff;
+    padding: 2px 12px; border-radius: 12px; font-size: 0.85em; margin-bottom: 1em;
+  }
+</style>
+</head>
+<body>
+<span class="badge">Jira &bull; KAN-1</span>
+<h1>Test Plan: KAN-1 — Task 1 -User Login Functionality</h1>
+<p><strong>Test Plan for KAN-1: User Login Functionality</strong></p>
+<h3>1. Objective</h3>
+<p>The objective of this test plan is to ensure that the user login functionality is working correctly, securely, and as expected. This includes verifying that users can successfully log in with valid credentials, are prevented from logging in with invalid credentials, and that the system handles various login scenarios correctly.</p>
+<h3>2. Scope</h3>
+<p><strong>In Scope:</strong>
+- User login form with username and password fields
+- Login functionality with valid and invalid credentials
+- Error handling for incorrect usernames or passwords
+- Session management after successful login
+- Login functionality across different browsers and devices</p>
+<p><strong>Out of Scope:</strong>
+- User registration or account creation process
+- Password recovery or reset functionality
+- Advanced security features such as two-factor authentication
+- Integration with third-party authentication services</p>
+<h3>3. Test Strategy</h3>
+<p>The test strategy for this feature will involve a combination of the following approaches:
+- <strong>Unit Testing:</strong> To verify the logic of individual components, such as password validation and username lookup.
+- <strong>Integration Testing:</strong> To ensure that the login form, backend authentication service, and session management work together seamlessly.
+- <strong>End-to-End (E2E) Testing:</strong> To simulate real-user interactions, covering the entire login process from entering credentials to accessing protected areas of the application.
+- <strong>Compatibility Testing:</strong> To ensure the login functionality works across different browsers, versions, and devices.</p>
+<h3>4. Test Cases</h3>
+<h4>Test Case 1: Successful Login</h4>
+<ul>
+<li><strong>Test Case ID:</strong> KAN-1-TC-001</li>
+<li><strong>Title:</strong> Login with Valid Credentials</li>
+<li><strong>Preconditions:</strong> User has a valid username and password.</li>
+<li><strong>Steps:</strong></li>
+<li>Open the application in a browser.</li>
+<li>Enter a valid username and password.</li>
+<li>Click the login button.</li>
+<li><strong>Expected Result:</strong> The user is logged in successfully and redirected to the dashboard or home page.</li>
+</ul>
+<h4>Test Case 2: Invalid Username</h4>
+<ul>
+<li><strong>Test Case ID:</strong> KAN-1-TC-002</li>
+<li><strong>Title:</strong> Login with Invalid Username</li>
+<li><strong>Preconditions:</strong> User has an invalid username but a valid password.</li>
+<li><strong>Steps:</strong></li>
+<li>Open the application in a browser.</li>
+<li>Enter an invalid username and a valid password.</li>
+<li>Click the login button.</li>
+<li><strong>Expected Result:</strong> An error message is displayed indicating that the username is incorrect.</li>
+</ul>
+<h4>Test Case 3: Invalid Password</h4>
+<ul>
+<li><strong>Test Case ID:</strong> KAN-1-TC-003</li>
+<li><strong>Title:</strong> Login with Invalid Password</li>
+<li><strong>Preconditions:</strong> User has a valid username but an invalid password.</li>
+<li><strong>Steps:</strong></li>
+<li>Open the application in a browser.</li>
+<li>Enter a valid username and an invalid password.</li>
+<li>Click the login button.</li>
+<li><strong>Expected Result:</strong> An error message is displayed indicating that the password is incorrect.</li>
+</ul>
+<h4>Test Case 4: Empty Fields</h4>
+<ul>
+<li><strong>Test Case ID:</strong> KAN-1-TC-004</li>
+<li><strong>Title:</strong> Login with Empty Fields</li>
+<li><strong>Preconditions:</strong> None.</li>
+<li><strong>Steps:</strong></li>
+<li>Open the application in a browser.</li>
+<li>Leave both the username and password fields empty.</li>
+<li>Click the login button.</li>
+<li><strong>Expected Result:</strong> An error message is displayed requiring the user to fill in both fields.</li>
+</ul>
+<h4>Test Case 5: SQL Injection Attempt</h4>
+<ul>
+<li><strong>Test Case ID:</strong> KAN-1-TC-005</li>
+<li><strong>Title:</strong> Attempting SQL Injection</li>
+<li><strong>Preconditions:</strong> None.</li>
+<li><strong>Steps:</strong></li>
+<li>Open the application in a browser.</li>
+<li>Enter a SQL injection payload in the username or password field.</li>
+<li>Click the login button.</li>
+<li><strong>Expected Result:</strong> The application prevents the SQL injection attempt and displays an error message, without compromising the database.</li>
+</ul>
+<h3>5. Entry &amp; Exit Criteria</h3>
+<p><strong>Entry Criteria:</strong>
+- The development team has completed the implementation of the user login functionality.
+- The necessary test environments are set up and accessible.
+- Test data, including valid and invalid user credentials, is available.</p>
+<p><strong>Exit Criteria:</strong>
+- All planned test cases have been executed.
+- All critical and high-priority defects found during testing have been resolved and retested.
+- The test results indicate that the user login functionality meets the requirements and works as expected.</p>
+<h3>6. Risks &amp; Mitigations</h3>
+<p><strong>Risks:</strong>
+- <strong>Security Vulnerabilities:</strong> The login functionality might contain security vulnerabilities, such as SQL injection or cross-site scripting (XSS), that could be exploited by attackers.
+- <strong>Compatibility Issues:</strong> The login functionality might not work as expected across different browsers, versions, or devices.
+- <strong>Performance Issues:</strong> The login process might be slow or unresponsive under heavy load.</p>
+<p><strong>Mitigations:</strong>
+- Conduct thorough security testing, including penetration testing and vulnerability scanning.
+- Perform compatibility testing across a range of browsers, versions, and devices.
+- Conduct performance testing to ensure the login functionality can handle the expected load.
+- Implement monitoring and logging to quickly identify and address any issues that arise in production.</p>
+</body>
+</html>
