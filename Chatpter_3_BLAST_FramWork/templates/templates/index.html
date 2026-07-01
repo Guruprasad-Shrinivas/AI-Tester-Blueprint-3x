@@ -140,6 +140,26 @@
     .plan-body tr:nth-child(even) td { background: #f4f7ff; }
     .plan-body code { background: #f4f5f7; padding: 2px 6px; border-radius: 4px; font-size: 0.88em; }
     .plan-body blockquote { border-left: 4px solid #0052cc; margin: 1em 0; padding: 8px 16px; background: #f0f4ff; color: #344563; }
+
+    /* ── Copy button ── */
+    .copy-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin: 0 28px 0 auto; padding: 7px 16px;
+      background: #fff; color: #0052cc;
+      border: 1.5px solid #0052cc; border-radius: 6px;
+      font-size: 0.85rem; font-weight: 600; cursor: pointer;
+      transition: background .15s, color .15s;
+    }
+    .copy-btn:hover { background: #0052cc; color: #fff; }
+    .copy-btn.copied { background: #00875a; border-color: #00875a; color: #fff; }
+
+    /* ── Spinner animation ── */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spin-icon {
+      display: inline-block; width: 14px; height: 14px;
+      border: 2px solid rgba(255,255,255,.4); border-top-color: #fff;
+      border-radius: 50%; animation: spin .7s linear infinite;
+    }
   </style>
 </head>
 <body>
@@ -164,9 +184,9 @@
       autocomplete="off"
       autofocus
     >
-    <button type="submit">
+    <button type="submit" id="submitBtn">
       <span class="btn-text">Generate Test Plan</span>
-      <span class="spinner">Generating…</span>
+      <span class="spinner" style="display:none"><span class="spin-icon"></span> Generating…</span>
     </button>
   </form>
 </div>
@@ -179,11 +199,14 @@
 
   {% if test_plan_html %}
     <div class="plan-card">
-      <div class="plan-card-header">
-        <span class="issue-badge">{{ issue_key }}</span>
-        <h1>{{ summary }}</h1>
+      <div class="plan-card-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span class="issue-badge">{{ issue_key }}</span>
+          <h1>{{ summary }}</h1>
+        </div>
+        <button class="copy-btn" id="copyBtn" onclick="copyPlan()">&#128203; Copy</button>
       </div>
-      <div class="plan-body">
+      <div class="plan-body" id="planBody">
         {{ test_plan_html | safe }}
       </div>
     </div>
@@ -198,5 +221,30 @@
 
 </main>
 
+<script>
+  // Show spinner on form submit
+  document.querySelector("form").addEventListener("submit", function() {
+    var btn = document.getElementById("submitBtn");
+    btn.querySelector(".btn-text").style.display = "none";
+    btn.querySelector(".spinner").style.display  = "inline-flex";
+    btn.disabled = true;
+  });
+
+  // Copy plan text to clipboard
+  function copyPlan() {
+    var body = document.getElementById("planBody");
+    if (!body) return;
+    var text = body.innerText || body.textContent;
+    navigator.clipboard.writeText(text).then(function() {
+      var btn = document.getElementById("copyBtn");
+      btn.textContent = "Copied!";
+      btn.classList.add("copied");
+      setTimeout(function() {
+        btn.innerHTML = "&#128203; Copy";
+        btn.classList.remove("copied");
+      }, 2000);
+    });
+  }
+</script>
 </body>
 </html>
