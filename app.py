@@ -3,26 +3,27 @@ Layer 2: Navigation (Flask routing layer).
 Routes user input through the tool chain. Contains no business logic.
 SOP: architecture/flask_app_sop.md
 """
-import sys
-sys.path.insert(0, r"c:\AI\3x\Chatpter_3_BLAST_FramWork\Lib\site-packages")
-
 import os
+import sys
 import requests
 import markdown as md_lib
 from dotenv import load_dotenv
 from flask import Flask, render_template, request
 
+_ROOT = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, _ROOT)
+
 from tools.jira_tool import fetch_issue
 from tools.llm_tool  import generate_test_plan
 
-load_dotenv(dotenv_path=r"c:\AI\3x\Chatpter_3_BLAST_FramWork\.env")
+load_dotenv(dotenv_path=os.path.join(_ROOT, ".env"), override=True)
 
 GROQ_KEY       = os.getenv("GROQ_KEY")
 JIRA_EMAIL     = os.getenv("JIRA_EMAIL")
 JIRA_API_TOKEN = os.getenv("JIRA_API_TOKEN")
 JIRA_URL       = os.getenv("JIRA_URL")
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder=os.path.join(_ROOT, "templates"))
 
 
 @app.route("/", methods=["GET", "POST"])

@@ -3,10 +3,6 @@ Layer 3 Tool: Jira Issue Fetch
 Atomic, testable. No Flask imports. No LLM calls.
 SOP: architecture/jira_fetch_sop.md
 """
-import sys
-import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "Lib", "site-packages"))
-
 import requests
 
 

@@ -3,10 +3,6 @@ Layer 3 Tool: Groq LLM Test Plan Generator
 Atomic, testable. No Flask imports. No Jira calls.
 SOP: architecture/test_plan_generation_sop.md
 """
-import sys
-import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "Lib", "site-packages"))
-
 from groq import Groq
 
 MODEL = "llama-3.3-70b-versatile"
