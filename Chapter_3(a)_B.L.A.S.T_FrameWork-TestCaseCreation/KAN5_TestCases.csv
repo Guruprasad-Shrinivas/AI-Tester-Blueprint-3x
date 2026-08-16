@@ -1,0 +1,4 @@
+Test_Case,TaxPlanCode,Plan Booster Entity,Employer Plan Key,Expected Result,Outcome
+Test_01,1247Q,"NOT PRVCX and NOT PRVQX and NOT PRVZX and NOT PRVTX","NOT 721450-X2 | NOT 721451-X2 | NOT 884203-X2 | NOT 664912-X2","New C12.0 - Green text and Light Black text should print - IN",IN
+Test_02,1247Q,PRVCX,NOT 721450-X2,"New C12.0 - Green text and Light Black text should NOT print - OUT",OUT
+Test_03,1247Q,NOT PRVCX,721450-X2,"New C12.0 - Green text and Light Black text should NOT print - OUT",OUT

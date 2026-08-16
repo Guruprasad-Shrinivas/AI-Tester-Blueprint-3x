@@ -1,0 +1,26 @@
+# Secrets
+.env
+
+# Python virtual environment
+Lib/
+Scripts/
+pyvenv.cfg
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# Vercel
+.vercel/
+
+# OS
+.DS_Store
+Thumbs.db

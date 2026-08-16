@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCases jira_issue="KAN-5" summary="Muco TaxPlanCode 1247Q Enhancement">
+  <TestCase id="Test_01" outcome="IN">
+    <TaxPlanCode>1247Q</TaxPlanCode>
+    <PlanBoosterEntity>NOT PRVCX and
+NOT PRVQX and
+NOT PRVZX and
+NOT PRVTX</PlanBoosterEntity>
+    <EmployerPlanKey>NOT 721450-X2
+NOT 721451-X2
+NOT 884203-X2
+NOT 664912-X2</EmployerPlanKey>
+    <ExpectedResult>New C12.0 - Green text and Light Black text should print - IN</ExpectedResult>
+  </TestCase>
+  <TestCase id="Test_02" outcome="OUT">
+    <TaxPlanCode>1247Q</TaxPlanCode>
+    <PlanBoosterEntity>PRVCX</PlanBoosterEntity>
+    <EmployerPlanKey>NOT 721450-X2</EmployerPlanKey>
+    <ExpectedResult>New C12.0 - Green text and Light Black text should NOT print - OUT</ExpectedResult>
+  </TestCase>
+  <TestCase id="Test_03" outcome="OUT">
+    <TaxPlanCode>1247Q</TaxPlanCode>
+    <PlanBoosterEntity>NOT PRVCX</PlanBoosterEntity>
+    <EmployerPlanKey>721450-X2</EmployerPlanKey>
+    <ExpectedResult>New C12.0 - Green text and Light Black text should NOT print - OUT</ExpectedResult>
+  </TestCase>
+</TestCases>
